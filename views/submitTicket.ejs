@@ -1,0 +1,30 @@
+<%- include("header") -%>
+
+<h1>Ticket</h1>
+
+<form action="/submitTicket" method="POST">
+    <label for="submittedBy">Submitted by</label>
+    <input type="text" id="submittedBy"  name="submittedBy" autocomplete="off">
+    <br>
+    <label for=""></label>
+    <label for="category">Category</label>
+    <input type="text" id="category"  name="category" autocomplete="off">
+    <br>
+    <label for=""></label>
+    <label for="subject">Subject</label>
+    <br>
+    <textarea cols="60" rows="10" id="subject" name="subject"></textarea>
+    <label for=""></label>
+    <br>
+    <button type="submit" name="ticket">Submit Ticket</button>
+</form>
+
+<%- include("footer") -%>
+
+
+<!-- submittedBy: String,
+    closedBy: String,
+    category: String,
+    dateTimeSubmitted: Date,
+    subject: String,
+    solution: Array -->
