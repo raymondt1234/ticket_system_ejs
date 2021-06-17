@@ -1,11 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use((req, res, next) => {
+    res.locals.moment = moment;
+    next();
+});
 
 
 mongoose.connect("mongodb://localhost:27017/ticketDB", { useNewUrlParser: true, useUnifiedTopology: true });
@@ -19,18 +24,21 @@ const ticketsSchema = {
     solution: Array
 }
 
-// const ticketQueueSchema = {
-//     name: String,
-//     tickets: [ticketsSchema]
-// }
-
 const Ticket = mongoose.model("Ticket", ticketsSchema);
-// const TicketQueue = mongoose.model("TicketQueue", ticketQueueSchema);
-
 
 
 app.get("/", (req, res) => {
     res.render(`${__dirname}/views/index`);
+});
+
+app.get("/viewTickets", (req, res) => {
+    Ticket.find({}, (error, tickets) => {
+        if (error) {
+            console.log(error);
+        } else {
+            res.render("viewTickets", { tickets: tickets });
+        }
+    });
 });
 
 app.get("/submitTicket", (req, res) => {
@@ -46,8 +54,6 @@ app.post("/submitTicket", (req, res) => {
         subject: req.body.subject,
         solution: ""
     });
-
-    console.log(ticket);
 
     ticket.save();
     res.redirect("/");
