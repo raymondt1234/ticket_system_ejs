@@ -1,0 +1,21 @@
+<%- include("header") -%>
+
+    <h1>Ticket</h1>
+
+    <p>
+        Submitted by: <%= ticket.submittedBy %>
+    </p>
+    <p>
+        Closed by: <%= ticket.closedBy %>
+    </p>
+    <p>
+        Category: <%= ticket.category %>
+    </p>
+    <p>
+        Submitted on: <%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>
+    </p>
+    <p>
+        <%= ticket.subject %>
+    </p>
+
+<%- include("footer") -%>

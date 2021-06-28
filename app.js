@@ -31,6 +31,8 @@ app.get("/", (req, res) => {
     res.render(`${__dirname}/views/index`);
 });
 
+
+
 app.get("/viewTickets", (req, res) => {
     Ticket.find({}, (error, tickets) => {
         if (error) {
@@ -43,6 +45,17 @@ app.get("/viewTickets", (req, res) => {
 
 app.get("/submitTicket", (req, res) => {
     res.render(`${__dirname}/views/submitTicket`);
+});
+
+app.post("/viewTicket", (req, res) => {
+    Ticket.findOne({_id: `${req.body.ticketId}`}, (error, ticket) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log(ticket);
+            res.render("viewTicket", { ticket: ticket });
+        }
+    });
 });
 
 app.post("/submitTicket", (req, res) => {
