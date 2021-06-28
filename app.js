@@ -21,7 +21,7 @@ const ticketsSchema = {
     category: String,
     dateTimeSubmitted: Date,
     subject: String,
-    solution: Array
+    solution: String
 }
 
 const Ticket = mongoose.model("Ticket", ticketsSchema);
@@ -52,7 +52,6 @@ app.post("/viewTicket", (req, res) => {
         if (error) {
             console.log(error);
         } else {
-            console.log(ticket);
             res.render("viewTicket", { ticket: ticket });
         }
     });
