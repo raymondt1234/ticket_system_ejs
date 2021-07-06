@@ -15,6 +15,9 @@ app.use((req, res, next) => {
 
 mongoose.connect("mongodb://localhost:27017/ticketDB", { useNewUrlParser: true, useUnifiedTopology: true });
 
+// useFindAndModify set to false so findOneAndUpdate will work without deprecation warnings
+mongoose.set('useFindAndModify', false);
+
 const ticketsSchema = {
     submittedBy: String,
     closedBy: String,
@@ -31,8 +34,6 @@ app.get("/", (req, res) => {
     res.render(`${__dirname}/views/index`);
 });
 
-
-
 app.get("/viewTickets", (req, res) => {
     Ticket.find({}, (error, tickets) => {
         if (error) {
@@ -43,11 +44,7 @@ app.get("/viewTickets", (req, res) => {
     });
 });
 
-app.get("/submitTicket", (req, res) => {
-    res.render(`${__dirname}/views/submitTicket`);
-});
-
-app.post("/viewTicket", (req, res) => {
+app.post("/viewTickets", (req, res) => {
     Ticket.findOne({_id: `${req.body.ticketId}`}, (error, ticket) => {
         if (error) {
             console.log(error);
@@ -55,6 +52,10 @@ app.post("/viewTicket", (req, res) => {
             res.render("viewTicket", { ticket: ticket });
         }
     });
+});
+
+app.get("/submitTicket", (req, res) => {
+    res.render(`${__dirname}/views/submitTicket`);
 });
 
 app.post("/submitTicket", (req, res) => {
@@ -70,6 +71,16 @@ app.post("/submitTicket", (req, res) => {
     ticket.save();
     res.redirect("/");
 
+});
+
+app.post("/closeTicket", (req, res) => {
+    Ticket.findOneAndUpdate({_id: `${req.body.ticketId}`}, {closedBy: req.body.closedBy, solution: req.body.solution}, (error, result) => {
+        if(error) {
+            console.log(error);
+        } else {
+            res.redirect("/viewTickets");
+        }
+    });
 });
 
 app.listen(3000, () => {

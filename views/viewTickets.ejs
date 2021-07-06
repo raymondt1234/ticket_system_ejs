@@ -4,22 +4,21 @@
     <table>
         <tr>
             <th>Submitted By</th>
-            <th>Closed By</th>
             <th>Category</th>
             <th>Date/Time Submitted</th>
             <th>Subject</th>
+            <th>Closed By</th>
+            <th>Solution</th>
             <th>View Ticket</th>
         </tr>
         <% tickets.forEach(ticket=> { %>
-            <form action="/viewTicket" method="post">
+            <form action="/viewTickets" method="post">
                 <tr class="ticket">
                     
                     <td>
                         <%= ticket.submittedBy %>
                     </td>
-                    <td>
-                        <%= ticket.closedBy %>
-                    </td>
+                    
                     <td>
                         <%= ticket.category %>
                     </td>
@@ -28,6 +27,12 @@
                     </td>
                     <td>
                         <%= ticket.subject %>
+                    </td>
+                    <td>
+                        <%= ticket.closedBy %>
+                    </td>
+                    <td>
+                        <%= ticket.solution %>
                     </td>
                     <td>
                         <button type="submit" name="ticketId" value="<%= ticket._id %>" onclick="this.form.submit()">View</button>
