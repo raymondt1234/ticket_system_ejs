@@ -31,7 +31,7 @@ const Ticket = mongoose.model("Ticket", ticketsSchema);
 
 
 app.get("/", (req, res) => {
-    res.render(`${__dirname}/views/index`);
+    res.redirect("/viewTickets");
 });
 
 app.get("/viewTickets", (req, res) => {
