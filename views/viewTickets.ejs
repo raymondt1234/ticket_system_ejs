@@ -1,47 +1,50 @@
 <%- include("header") -%>
-
-    <h1>Tickets</h1>
-    <a href="/submitTicket">Submit a Ticket</a>
-    <table>
-        <tr>
-            <th>Submitted By</th>
-            <th>Category</th>
-            <th>Date/Time Submitted</th>
-            <th>Subject</th>
-            <th>Closed By</th>
-            <th>Solution</th>
-            <th>View Ticket</th>
-        </tr>
-        <% tickets.forEach(ticket=> { %>
-            <form action="/viewTickets" method="post">
-                <tr class="ticket">
-                    
-                    <td>
-                        <%= ticket.submittedBy %>
-                    </td>
-                    
-                    <td>
-                        <%= ticket.category %>
-                    </td>
-                    <td>
-                        <%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>
-                    </td>
-                    <td>
-                        <%= ticket.subject %>
-                    </td>
-                    <td>
-                        <%= ticket.closedBy %>
-                    </td>
-                    <td>
-                        <%= ticket.solution %>
-                    </td>
-                    <td>
-                        <button type="submit" name="ticketId" value="<%= ticket._id %>" onclick="this.form.submit()">View</button>
-                    </td>
+    <div class="container-fluid">
+        <h1>Tickets</h1>
+        <br>
+        <button class="btn btn-dark" onclick="window.location.href='/submitTicket'">Submit Ticket</button>
+        <br>
+        <br>
+        <table class="table">
+            <thead class="thead-dark">
+                <th scope="col">Submitted By</th>
+                <th scope="col">Category</th>
+                <th scope="col">Date/Time Submitted</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Closed By</th>
+                <th scope="col">Solution</th>
+                <th scope="col">View Ticket</th>
                 </tr>
-            </form>
-        <% }); %>
-    </table>
+                <% tickets.forEach(ticket=> { %>
+                    <form action="/viewTickets" method="post">
+                        <tr class="ticket">
+                            <td>
+                                <%= ticket.submittedBy %>
+                            </td>
 
+                            <td>
+                                <%= ticket.category %>
+                            </td>
+                            <td>
+                                <%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>
+                            </td>
+                            <td>
+                                <%= ticket.subject %>
+                            </td>
+                            <td>
+                                <%= ticket.closedBy %>
+                            </td>
+                            <td>
+                                <%= ticket.solution %>
+                            </td>
+                            <td>
+                                <button class="btn btn-dark" type="submit" name="ticketId" value="<%= ticket._id %>"
+                                    onclick="this.form.submit()">View</button>
+                            </td>
+                        </tr>
+                    </form>
+                    <% }); %>
+        </table>
+    </div>
 
     <%- include("footer") -%>

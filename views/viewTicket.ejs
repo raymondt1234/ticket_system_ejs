@@ -1,34 +1,53 @@
 <%- include("header") -%>
 
-    <h1>Ticket</h1>
+    <div class="container-fluid">
+        <h1>Ticket</h1>
 
-    <label for="submittedBy">Submitted by: </label>
-    <textarea name="submittedBy" cols="30" rows="1" readonly><%= ticket.submittedBy %></textarea>
-    <br>
-    
-    <label for="category">Category: </label>
-    <textarea name="category" cols="30" rows="1" readonly><%= ticket.category %></textarea>
-    <br>
+        <button class="btn btn-dark" onclick="window.location.href='/viewTickets'">Return to Tickets</button>
 
-    <label for="dateTime">Submitted on: </label>
-    <textarea name="dateTime" cols="30" rows="1" readonly><%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %></textarea>
-    <br>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-4">
+                    <label for="submittedBy">Submitted by</label>
+                    <input type="text" id="submittedBy" class="form-control" value=" <%=ticket.submittedBy %>" readonly>
+                </div>
 
-    <label for="subject">Subject </label>
-    <textarea name="subject" cols="30" rows="10" readonly><%= ticket.subject %></textarea>
-    <br>
+                <div class="form-group col-4">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" class="form-control" value=" <%=ticket.category %>" readonly>
+                </div>
 
-    <h2>Close Ticket</h2>
-    <form action="/closeTicket" method="post">
-        <label for="closedBy">Closed by: </label>
-        <textarea name="closedBy" cols="30" rows="1"><%= ticket.closedBy %></textarea>
-        <br>
-        <label for="solution"></label>
-        <textarea name="solution" cols="30" rows="10"></textarea>
-        <br>
-        <input type="hidden" name="ticketId" value="<%= ticket._id %>">
-        <button type="submit">Close Ticket</button>
-    </form>
+                <div class="form-group col-4">
+                    <label for="dateTime">Submitted on</label>
+                    <input type="text" id="dateTime" class="form-control"
+                        value=" <%=moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject </label>
+                <textarea class="form-control name=" subject" rows="10" readonly><%= ticket.subject %></textarea>
+            </div>
+        </form>
+
+        <h2>Close Ticket</h2>
+
+        <form action="/closeTicket" method="post">
+            <div class="form-row">
+                <div class="form-group col-4">
+                    <label for="closedBy">Closed by</label>
+                    <input class="form-control" type="text" id="closedBy" value="<%= ticket.closedBy %>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="solution">Solution</label>
+                <textarea class="form-control" id="solution" rows=" 10"></textarea>
+            </div>
+            <input type="hidden" name="ticketId" value="<%= ticket._id %>">
+            <button class="btn btn-dark" type="submit">Close Ticket</button>
+        </form>
+
+    </div>
 
 
-<%- include("footer") -%>
+    <%- include("footer") -%>

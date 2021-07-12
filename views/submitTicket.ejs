@@ -1,19 +1,28 @@
 <%- include("header") -%>
 
-<h1>Submit Ticket</h1>
+    <div class="container-fluid">
+        <h1>Submit Ticket</h1>
 
-<form action="/submitTicket" method="post">
-    <label for="submittedBy">Submitted by</label>
-    <input type="text" id="submittedBy"  name="submittedBy" autocomplete="off">
-    <br>
-    <label for="category">Category</label>
-    <input type="text" id="category"  name="category" autocomplete="off">
-    <br>
-    <label for="subject">Subject</label>
-    <br>
-    <textarea cols="60" rows="10" id="subject" name="subject"></textarea>
-    <br>
-    <button type="submit" name="ticket">Submit Ticket</button>
-</form>
+        <button class="btn btn-dark" onclick="window.location.href='/viewTickets'">Return to Tickets</button>
 
-<%- include("footer") -%>
+        <form action="/submitTicket" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="submittedBy">Submitted By</label>
+                    <input class="form-control" type="text" name="submittedBy">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="category">Category</label>
+                    <input class="form-control" type="text" name="category">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <textarea class="form-control" name="subject" rows="10"></textarea>
+            </div>
+            <button class="btn btn-dark" type="submit" name="ticket">Submit Ticket</button>
+            
+        </form>
+        
+    </div>
+    <%- include("footer") -%>
