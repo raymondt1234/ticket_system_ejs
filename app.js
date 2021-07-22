@@ -19,11 +19,13 @@ mongoose.connect("mongodb://localhost:27017/ticketDB", { useNewUrlParser: true, 
 mongoose.set('useFindAndModify', false);
 
 const ticketsSchema = {
-    submittedBy: String,
-    closedBy: String,
-    category: String,
-    dateTimeSubmitted: Date,
     subject: String,
+    category: String,
+    priority: String,
+    submittedBy: String,
+    dateTimeSubmitted: Date,
+    closedBy: String,
+    dateTimeClosed: Date,
     solution: String
 }
 
@@ -60,12 +62,14 @@ app.get("/submitTicket", (req, res) => {
 
 app.post("/submitTicket", (req, res) => {
     const ticket = new Ticket({
-        submittedBy: req.body.submittedBy,
-        closedBy: "",
-        category: req.body.category,
-        dateTimeSubmitted: new Date(),
         subject: req.body.subject,
-        solution: ""
+        category: req.body.category,
+        priority: req.body.priority,
+        submittedBy: req.body.submittedBy,
+        dateTimeSubmitted: new Date(),
+        closedBy: "",
+        dateTimeClosed: "",
+        solution: ""      
     });
 
     ticket.save();
@@ -74,7 +78,7 @@ app.post("/submitTicket", (req, res) => {
 });
 
 app.post("/closeTicket", (req, res) => {
-    Ticket.findOneAndUpdate({_id: `${req.body.ticketId}`}, {closedBy: req.body.closedBy, solution: req.body.solution}, (error, result) => {
+    Ticket.findOneAndUpdate({_id: `${req.body.ticketId}`}, {closedBy: req.body.closedBy, dateTimeClosed: new Date(), solution: req.body.solution}, (error, result) => {
         if(error) {
             console.log(error);
         } else {

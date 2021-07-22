@@ -7,10 +7,11 @@
         <br>
         <table class="table">
             <thead class="thead-dark">
-                <th scope="col">Submitted By</th>
                 <th scope="col">Category</th>
-                <th scope="col">Date/Time Submitted</th>
                 <th scope="col">Subject</th>
+                <th scope="col">Submitted By</th>
+                <th scope="col">Date/Time Submitted</th>
+                <th scope="col">Date/Time Closed</th>
                 <th scope="col">Closed By</th>
                 <th scope="col">Solution</th>
                 <th scope="col">View Ticket</th>
@@ -19,24 +20,36 @@
                     <form action="/viewTickets" method="post">
                         <tr class="ticket">
                             <td>
+                                <%= ticket.category %>
+                            </td>
+
+                            <td>
+                                <%= ticket.subject %>
+                            </td>
+
+                            <td>
                                 <%= ticket.submittedBy %>
                             </td>
 
                             <td>
-                                <%= ticket.category %>
-                            </td>
-                            <td>
                                 <%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>
                             </td>
+
                             <td>
-                                <%= ticket.subject %>
+                                <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
+                                <% if(ticket.dateTimeClosed !==null) { %>
+                                    <%= moment(ticket.dateTimeClosed).format('h:mm:ss a Do MMMM, YYYY'); %>
+                                <% } %>
                             </td>
+
                             <td>
                                 <%= ticket.closedBy %>
                             </td>
+
                             <td>
                                 <%= ticket.solution %>
                             </td>
+
                             <td>
                                 <button class="btn btn-dark" type="submit" name="ticketId" value="<%= ticket._id %>"
                                     onclick="this.form.submit()">View</button>
