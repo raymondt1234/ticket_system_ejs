@@ -31,6 +31,19 @@ const ticketsSchema = {
 
 const Ticket = mongoose.model("Ticket", ticketsSchema);
 
+const ticketCategoriesSchema = {
+    category: String
+}
+
+const TicketCategory = mongoose.model("TicketCategory", ticketCategoriesSchema);
+
+// Create default Ticket Categories
+
+const category1 = new TicketCategory({ category: "Broken/Missing Feature" });
+const category2 = new TicketCategory({ category: "Broken Page" });
+const category3 = new TicketCategory({ category: "General" });
+
+const defaultCategories = [category1, category2, category3];
 
 app.get("/", (req, res) => {
     res.redirect("/viewTickets");
@@ -47,7 +60,7 @@ app.get("/viewTickets", (req, res) => {
 });
 
 app.post("/viewTickets", (req, res) => {
-    Ticket.findOne({_id: `${req.body.ticketId}`}, (error, ticket) => {
+    Ticket.findOne({ _id: `${req.body.ticketId}` }, (error, ticket) => {
         if (error) {
             console.log(error);
         } else {
@@ -57,7 +70,13 @@ app.post("/viewTickets", (req, res) => {
 });
 
 app.get("/submitTicket", (req, res) => {
-    res.render(`${__dirname}/views/submitTicket`);
+    TicketCategory.find({}, (error, categories) => {
+        if(error) {
+            console.log(error);
+        } else {
+            res.render("submitTicket", {categories: categories});
+        }
+    });
 });
 
 app.post("/submitTicket", (req, res) => {
@@ -69,7 +88,7 @@ app.post("/submitTicket", (req, res) => {
         dateTimeSubmitted: new Date(),
         closedBy: "",
         dateTimeClosed: "",
-        solution: ""      
+        solution: ""
     });
 
     ticket.save();
@@ -77,9 +96,56 @@ app.post("/submitTicket", (req, res) => {
 
 });
 
-app.post("/closeTicket", (req, res) => {
-    Ticket.findOneAndUpdate({_id: `${req.body.ticketId}`}, {closedBy: req.body.closedBy, dateTimeClosed: new Date(), solution: req.body.solution}, (error, result) => {
+app.get("/categories", (req, res) => {
+    // Check if any categories exist
+    TicketCategory.find({}, (error, currentCategories) => {
+        
+        if (error) {
+            console.log(error);
+        } else {
+
+            // If no categories exist add the default categories
+            if (currentCategories.length === 0) {
+                TicketCategory.insertMany(defaultCategories, error => {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log("Default categories added.");
+                    }
+                });
+                res.redirect("/categories");
+            } else {
+                res.render("categories", { categories: currentCategories });
+            }
+        }
+    });
+});
+
+app.post("/addCategory", (req, res) => {
+    TicketCategory.create({category: req.body.newCategory}, (error) => {
         if(error) {
+            console.log(error);
+        } else {
+            console.log(`Category: ${req.body.newCategory} added.`);
+        }
+    });
+    res.redirect("/categories");
+});
+
+app.post("/removeCategory", (req, res) => {
+    TicketCategory.findByIdAndDelete(req.body._id, (error, category) => {
+        if(error) {
+            console.log(error);
+        } else {
+            console.log(`Category: ${category.category} removed.`);
+        }
+    });
+    res.redirect("/categories");
+});
+
+app.post("/closeTicket", (req, res) => {
+    Ticket.findOneAndUpdate({ _id: `${req.body.ticketId}` }, { closedBy: req.body.closedBy, dateTimeClosed: new Date(), solution: req.body.solution }, (error, result) => {
+        if (error) {
             console.log(error);
         } else {
             res.redirect("/viewTickets");

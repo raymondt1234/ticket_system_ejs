@@ -3,6 +3,7 @@
         <h1>Tickets</h1>
         <br>
         <button class="btn btn-dark" onclick="window.location.href='/submitTicket'">Submit Ticket</button>
+        <button class="btn btn-dark" onclick="window.location.href='/categories'">Categories</button>
         <br>
         <br>
         <table class="table">
@@ -15,48 +16,48 @@
                 <th scope="col">Closed By</th>
                 <th scope="col">Solution</th>
                 <th scope="col">View Ticket</th>
-                </tr>
-                <% tickets.forEach(ticket=> { %>
-                    <form action="/viewTickets" method="post">
-                        <tr class="ticket">
-                            <td>
-                                <%= ticket.category %>
-                            </td>
+            </thead>
+            <% tickets.forEach(ticket=> { %>
+                <form action="/viewTickets" method="post">
+                    <tr class="ticket">
+                        <td>
+                            <%= ticket.category %>
+                        </td>
 
-                            <td>
-                                <%= ticket.subject %>
-                            </td>
+                        <td>
+                            <%= ticket.subject %>
+                        </td>
 
-                            <td>
-                                <%= ticket.submittedBy %>
-                            </td>
+                        <td>
+                            <%= ticket.submittedBy %>
+                        </td>
 
-                            <td>
-                                <%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>
-                            </td>
+                        <td>
+                            <%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>
+                        </td>
 
-                            <td>
-                                <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
-                                <% if(ticket.dateTimeClosed !==null) { %>
-                                    <%= moment(ticket.dateTimeClosed).format('h:mm:ss a Do MMMM, YYYY'); %>
-                                <% } %>
-                            </td>
+                        <td>
+                            <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
+                            <% if(ticket.dateTimeClosed !==null) { %>
+                                <%= moment(ticket.dateTimeClosed).format('h:mm:ss a Do MMMM, YYYY'); %>
+                                    <% } %>
+                        </td>
 
-                            <td>
-                                <%= ticket.closedBy %>
-                            </td>
+                        <td>
+                            <%= ticket.closedBy %>
+                        </td>
 
-                            <td>
-                                <%= ticket.solution %>
-                            </td>
+                        <td>
+                            <%= ticket.solution %>
+                        </td>
 
-                            <td>
-                                <button class="btn btn-dark" type="submit" name="ticketId" value="<%= ticket._id %>"
-                                    onclick="this.form.submit()">View</button>
-                            </td>
-                        </tr>
-                    </form>
-                    <% }); %>
+                        <td>
+                            <button class="btn btn-dark" type="submit" name="ticketId" value="<%= ticket._id %>"
+                                onclick="this.form.submit()">View</button>
+                        </td>
+                    </tr>
+                </form>
+                <% }); %>
         </table>
     </div>
 

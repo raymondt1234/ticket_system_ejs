@@ -1,0 +1,38 @@
+<%- include("header") -%>
+
+    <div class="container">
+        <h1>Categories</h1>
+        <br>
+        <button class="btn btn-dark" onclick="window.location.href='/viewTickets'">View Tickets</button>
+        <br>
+        <br>
+        <table class="table">
+            <thead class="thead-dark">
+                <th scope="col">Category</th>
+                <th scope="col">Remove</th>
+            </thead>
+            <% categories.forEach(category=> { %>
+                <tr>
+                    <td>
+                        <%= category.category %>
+                    </td>
+                    <td>
+                        <form action="/removeCategory" method="post">
+                            <button type="submit" class="btn btn-dark" name="_id" value="<%= category._id %>">X</button>
+                        </form>
+                    </td>
+                </tr>
+
+                <% }); %>
+        </table>
+
+        <form class="form-inline" action="/addCategory" method="post">
+            <div class="form-group">
+                <label for="newCategory">New Category</label>
+                <input type="text" class="form-control" name="newCategory">
+                <button type="submit" class="btn btn-dark">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <%- include("footer") -%>
