@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 require("dotenv").config();
 
+const port = process.env.PORT;
+const host = process.env.HOST;
+
 const app = express();
 
 app.set("view engine", "ejs");
@@ -154,6 +157,6 @@ app.post("/closeTicket", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Server listening at http://localhost:3000");
+app.listen(port, () => {
+    console.log(`Server listening at http://${host}:${port}`);
 });
