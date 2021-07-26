@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const moment = require("moment");
+require("dotenv").config();
 
 const app = express();
 
@@ -13,10 +14,7 @@ app.use((req, res, next) => {
 });
 
 
-mongoose.connect("mongodb://localhost:27017/ticketDB", { useNewUrlParser: true, useUnifiedTopology: true });
-
-// useFindAndModify set to false so findOneAndUpdate will work without deprecation warnings
-mongoose.set('useFindAndModify', false);
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/ticketDB", { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false, });
 
 const ticketsSchema = {
     subject: String,
@@ -45,6 +43,8 @@ const category3 = new TicketCategory({ category: "General" });
 
 const defaultCategories = [category1, category2, category3];
 
+let defaultCategoriesAdded = false;
+
 app.get("/", (req, res) => {
     res.redirect("/viewTickets");
 });
@@ -71,10 +71,10 @@ app.post("/viewTickets", (req, res) => {
 
 app.get("/submitTicket", (req, res) => {
     TicketCategory.find({}, (error, categories) => {
-        if(error) {
+        if (error) {
             console.log(error);
         } else {
-            res.render("submitTicket", {categories: categories});
+            res.render("submitTicket", { categories: categories });
         }
     });
 });
@@ -99,18 +99,19 @@ app.post("/submitTicket", (req, res) => {
 app.get("/categories", (req, res) => {
     // Check if any categories exist
     TicketCategory.find({}, (error, currentCategories) => {
-        
+
         if (error) {
             console.log(error);
         } else {
 
             // If no categories exist add the default categories
-            if (currentCategories.length === 0) {
+            if (currentCategories.length === 0 && !defaultCategoriesAdded) {
                 TicketCategory.insertMany(defaultCategories, error => {
                     if (error) {
                         console.log(error);
                     } else {
                         console.log("Default categories added.");
+                        defaultCategoriesAdded = true;
                     }
                 });
                 res.redirect("/categories");
@@ -122,8 +123,8 @@ app.get("/categories", (req, res) => {
 });
 
 app.post("/addCategory", (req, res) => {
-    TicketCategory.create({category: req.body.newCategory}, (error) => {
-        if(error) {
+    TicketCategory.create({ category: req.body.newCategory }, (error) => {
+        if (error) {
             console.log(error);
         } else {
             console.log(`Category: ${req.body.newCategory} added.`);
@@ -134,7 +135,7 @@ app.post("/addCategory", (req, res) => {
 
 app.post("/removeCategory", (req, res) => {
     TicketCategory.findByIdAndDelete(req.body._id, (error, category) => {
-        if(error) {
+        if (error) {
             console.log(error);
         } else {
             console.log(`Category: ${category.category} removed.`);
