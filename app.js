@@ -49,19 +49,22 @@ const category3 = new TicketCategory({ category: "General" });
 
 const defaultCategories = [category1, category2, category3];
 
-let defaultCategoriesAdded = false;
-
-// Insert default Ticket Categories into the Database
-if (!defaultCategories) {
-    TicketCategory.insertMany(defaultCategories, error => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Default categories added.");
-            defaultCategoriesAdded = true;
+// Insert default Ticket Categories into the Database if none have been added before
+TicketCategory.find({}, (error, categories) => {
+    if (error) {
+        console.log(error);
+    } else {
+        if (categories.length === 0) {
+            TicketCategory.insertMany(defaultCategories, error => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log("Default categories added.");
+                }
+            });
         }
-    });
-}
+    }
+});
 
 app.get("/", (req, res) => {
     res.redirect("/viewTickets");
