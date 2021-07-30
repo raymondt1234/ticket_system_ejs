@@ -5,6 +5,8 @@ require("dotenv").config();
 
 const port = process.env.PORT;
 const host = process.env.HOST;
+const username = process.env.DBUSERNAME;
+const password = process.env.PASSWORD;
 
 const app = express();
 
@@ -17,7 +19,8 @@ app.use((req, res, next) => {
 });
 
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/ticketDB", { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false, });
+mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://${username}:${password}@cluster0.7bko6.mongodb.net/ticketDB?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false, });
+
 
 const ticketsSchema = {
     subject: String,
@@ -47,6 +50,18 @@ const category3 = new TicketCategory({ category: "General" });
 const defaultCategories = [category1, category2, category3];
 
 let defaultCategoriesAdded = false;
+
+// Insert default Ticket Categories into the Database
+if (!defaultCategories) {
+    TicketCategory.insertMany(defaultCategories, error => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Default categories added.");
+            defaultCategoriesAdded = true;
+        }
+    });
+}
 
 app.get("/", (req, res) => {
     res.redirect("/viewTickets");
@@ -101,26 +116,12 @@ app.post("/submitTicket", (req, res) => {
 
 app.get("/categories", (req, res) => {
     // Check if any categories exist
-    TicketCategory.find({}, (error, currentCategories) => {
+    TicketCategory.find({}, (error, categories) => {
 
         if (error) {
             console.log(error);
         } else {
-
-            // If no categories exist add the default categories
-            if (currentCategories.length === 0 && !defaultCategoriesAdded) {
-                TicketCategory.insertMany(defaultCategories, error => {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        console.log("Default categories added.");
-                        defaultCategoriesAdded = true;
-                    }
-                });
-                res.redirect("/categories");
-            } else {
-                res.render("categories", { categories: currentCategories });
-            }
+            res.render("categories", { categories: categories });
         }
     });
 });
