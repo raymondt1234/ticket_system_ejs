@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 require("dotenv").config();
 
-const port = process.env.PORT;
 const host = process.env.HOST;
+const port = process.env.PORT;
 const username = process.env.DBUSERNAME;
 const password = process.env.PASSWORD;
 
