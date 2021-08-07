@@ -41,15 +41,30 @@
             <div class="form-row">
                 <div class="form-group col-4">
                     <label for="closedBy">Closed by</label>
-                    <input class="form-control" type="text" name="closedBy" value="<%= ticket.closedBy %>" required>
+                    <!-- Set to readonly when the ticket has already been closed -->
+                    <% if (ticket.closedBy === "") { %>
+                        <input class="form-control" type="text" name="closedBy" value="<%= ticket.closedBy %>" required>
+                    <% } else { %>
+                        <input class="form-control" type="text" name="closedBy" value="<%= ticket.closedBy %>" required readonly>
+                    <% } %>
                 </div>
             </div>
             <div class="form-group">
                 <label for="solution">Solution</label>
-                <textarea class="form-control" name="solution" rows="10"><%= ticket.solution %></textarea>
+                <!-- Set to readonly when the ticket has already been closed -->
+                <% if (ticket.solution === "") { %>
+                    <textarea class="form-control" name="solution" rows="10"><%= ticket.solution %></textarea>
+                <% } else { %>
+                    <textarea class="form-control" name="solution" rows="10" readonly><%= ticket.solution %></textarea>
+                <% } %>
             </div>
             <input type="hidden" name="ticketId" value="<%= ticket._id %>" required>
-            <button class="btn btn-dark" type="submit">Close Ticket</button>
+            <!-- Disable the button when the ticket has already been closed -->
+            <% if (ticket.closedBy === "") { %>
+                <button class="btn btn-dark" type="submit">Close Ticket</button>
+            <% } else { %>
+                <button class="btn btn-dark" type="submit" disabled>Close Ticket</button>
+            <% } %>
         </form>
 
     </div>
