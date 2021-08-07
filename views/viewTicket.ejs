@@ -25,7 +25,7 @@
                 <div class="form-group col-4">
                     <label for="dateTime">Submitted on</label>
                     <input type="text" id="dateTime" class="form-control"
-                        value=" <%=moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>" readonly>
+                        value=" <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(ticket.dateTimeSubmitted); %>" readonly>
                 </div>
             </div>
 
