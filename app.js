@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const moment = require("moment");
 require("dotenv").config();
 
 const host = process.env.HOST;
@@ -13,10 +12,6 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-app.use((req, res, next) => {
-    res.locals.moment = moment;
-    next();
-});
 
 
 mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://${username}:${password}@cluster0.7bko6.mongodb.net/ticketDB?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false, });

@@ -38,14 +38,14 @@
                         </td>
 
                         <td>
-                            <%= moment(ticket.dateTimeSubmitted).format('h:mm:ss a Do MMMM, YYYY'); %>
+                            <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(ticket.dateTimeSubmitted); %>
                         </td>
 
                         <td>
                             <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
                             <% if(ticket.dateTimeClosed !==null) { %>
-                                <%= moment(ticket.dateTimeClosed).format('h:mm:ss a Do MMMM, YYYY'); %>
-                                    <% } %>
+                                <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(ticket.dateTimeClosed); %>
+                            <% } %>
                         </td>
 
                         <td>
