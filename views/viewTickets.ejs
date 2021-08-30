@@ -3,9 +3,22 @@
         <h1>Tickets</h1>
         <br>
         <button class="btn btn-dark" onclick="window.location.href='/submitTicket'">Open Ticket</button>
-        <button class="btn btn-dark" onclick="window.location.href='/categories'">Categories</button>
+        <button class="btn btn-dark" onclick="window.location.href='/categories'">Edit Categories</button>
         <br>
         <br>
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="categorySelect">Filter by Category</label>
+            <select class="form-select" id="categorySelect">
+                <option selected value="None">None</option>
+                <% categories.forEach(category=> { %>
+                    <option value="<%= category.category %>">
+                        <%= category.category %>
+                    </option>
+                <%});%>
+            </select>
+        </div>
+       
         <table class="table">
             <thead class="thead-dark">
                 <th scope="col">Category</th>
@@ -19,8 +32,8 @@
                 <th scope="col">View Ticket</th>
             </thead>
             <% tickets.forEach(ticket=> { %>
-                <form action="/viewTickets" method="post">
-                    <tr class="ticket">
+                <form action="/viewTickets" method="post" >
+                    <tr class="ticket" data-category="<%= ticket.category %>">
                         <td>
                             <%= ticket.category %>
                         </td>
@@ -28,7 +41,7 @@
                         <td>
                             <%= ticket.subject %>
                         </td>
-                        
+
                         <td>
                             <%= ticket.priority %>
                         </td>
@@ -38,14 +51,16 @@
                         </td>
 
                         <td>
-                            <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(ticket.dateTimeSubmitted); %>
+                            <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'
+                                }).format(ticket.dateTimeSubmitted); %>
                         </td>
 
                         <td>
                             <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
                             <% if(ticket.dateTimeClosed !==null) { %>
-                                <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(ticket.dateTimeClosed); %>
-                            <% } %>
+                                <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'
+                                    }).format(ticket.dateTimeClosed); %>
+                                    <% } %>
                         </td>
 
                         <td>

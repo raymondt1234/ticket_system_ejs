@@ -7,7 +7,6 @@ This app allows users to open new support tickets. Each ticket includes a descri
 ## Links
 
 - App on Heroku: https://safe-mesa-85649.herokuapp.com/
-- Repository: https://github.com/raymondt1234/ticket_system_ejs
 
 
 ## Licensing

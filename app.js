@@ -70,7 +70,13 @@ app.get("/viewTickets", (req, res) => {
         if (error) {
             console.log(error);
         } else {
-            res.render("viewTickets", { tickets: tickets });
+            TicketCategory.find({}, (error, categories) => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    res.render("viewTickets", { tickets: tickets, categories: categories });
+                }
+            });
         }
     });
 });
