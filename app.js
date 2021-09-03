@@ -66,19 +66,21 @@ app.get("/", (req, res) => {
 });
 
 app.get("/viewTickets", (req, res) => {
-    Ticket.find({}, (error, tickets) => {
-        if (error) {
-            console.log(error);
-        } else {
-            TicketCategory.find({}, (error, categories) => {
-                if (error) {
-                    console.log(error);
-                } else {
-                    res.render("viewTickets", { tickets: tickets, categories: categories });
-                }
-            });
-        }
-    });
+    Ticket
+        .find({}, (error, tickets) => {
+            if (error) {
+                console.log(error);
+            } else {
+                TicketCategory.find({}, (error, categories) => {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        res.render("viewTickets", { tickets: tickets, categories: categories });
+                    }
+                });
+            }
+        })
+        .sort({ "dateTimeSubmitted": -1 });
 });
 
 app.post("/viewTickets", (req, res) => {
