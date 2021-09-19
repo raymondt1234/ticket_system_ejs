@@ -4,6 +4,18 @@
         <br>
         <button class="btn btn-dark" onclick="window.location.href='/submitTicket'">Open Ticket</button>
         <button class="btn btn-dark" onclick="window.location.href='/categories'">Edit Categories</button>
+
+        <div class="btn-group btn-group-toggle" id="ticketSelect" data-toggle="buttons">
+            <label class="btn btn-dark active">
+                <input type="radio" name="options" id="all" autocomplete="off" checked> All Tickets
+            </label>
+            <label class="btn btn-dark">
+                <input type="radio" name="options" id="open" autocomplete="off"> Open Tickets
+            </label>
+            <label class="btn btn-dark">
+                <input type="radio" name="options" id="closed" autocomplete="off"> Closed Tickets
+            </label>
+        </div>
         <br>
         <br>
 
@@ -15,10 +27,10 @@
                     <option value="<%= category.category %>">
                         <%= category.category %>
                     </option>
-                <%});%>
+                    <%});%>
             </select>
         </div>
-       
+
         <table class="table">
             <thead class="thead-dark">
                 <th scope="col">Category</th>
@@ -32,50 +44,51 @@
                 <th scope="col">View Ticket</th>
             </thead>
             <% tickets.forEach(ticket=> { %>
-                <form action="/viewTickets" method="post" >
-                    <tr class="ticket" data-category="<%= ticket.category %>">
-                        <td>
-                            <%= ticket.category %>
-                        </td>
+                <form action="/viewTickets" method="post">
+                    <% if (ticket.closedBy==="" ) { %>
+                        <tr class="ticket open" data-category="<%= ticket.category %>">
+                    <% } else { %>
+                        <tr class="ticket closed" data-category="<%= ticket.category %>">
+                    <% } %>
+                            <td>
+                                <%= ticket.category %>
+                            </td>
 
-                        <td>
-                            <%= ticket.subject %>
-                        </td>
+                            <td>
+                                <%= ticket.subject %>
+                            </td>
 
-                        <td>
-                            <%= ticket.priority %>
-                        </td>
+                            <td>
+                                <%= ticket.priority %>
+                            </td>
 
-                        <td>
-                            <%= ticket.submittedBy %>
-                        </td>
+                            <td>
+                                <%= ticket.submittedBy %>
+                            </td>
 
-                        <td>
-                            <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'
-                                }).format(ticket.dateTimeSubmitted); %>
-                        </td>
+                            <td>
+                                <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'}).format(ticket.dateTimeSubmitted); %>
+                            </td>
 
-                        <td>
-                            <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
-                            <% if(ticket.dateTimeClosed !==null) { %>
-                                <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'
-                                    }).format(ticket.dateTimeClosed); %>
-                                    <% } %>
-                        </td>
+                            <td>
+                                <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
+                                <% if(ticket.dateTimeClosed !==null) { %>
+                                    <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'}).format(ticket.dateTimeClosed); %>
+                                <% } %>
+                            </td>
 
-                        <td>
-                            <%= ticket.closedBy %>
-                        </td>
+                            <td>
+                                <%= ticket.closedBy %>
+                            </td>
 
-                        <td>
-                            <%= ticket.solution %>
-                        </td>
+                            <td>
+                                <%= ticket.solution %>
+                            </td>
 
-                        <td>
-                            <button class="btn btn-dark" type="submit" name="ticketId" value="<%= ticket._id %>"
-                                onclick="this.form.submit()">View</button>
-                        </td>
-                    </tr>
+                            <td>
+                                <button class="btn btn-dark" type="submit" name="ticketId" value="<%= ticket._id %>"onclick="this.form.submit()">View</button>
+                            </td>
+                        </tr>
                 </form>
                 <% }); %>
         </table>
