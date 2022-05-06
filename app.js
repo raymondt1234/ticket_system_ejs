@@ -6,6 +6,7 @@ const host = process.env.HOST;
 const port = process.env.PORT;
 const username = process.env.DBUSERNAME;
 const password = process.env.PASSWORD;
+const mongodbServer = `mongodb+srv://${username}:${password}@cluster0.7bko6.mongodb.net/ticketDB?retryWrites=true&w=majority`;
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 
-mongoose.connect(process.env.MONGODB_URI || `mongodb+srv://${username}:${password}@cluster0.7bko6.mongodb.net/ticketDB?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false, });
+mongoose.connect(process.env.MONGODB_URI || mongodbServer, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false, });
 
 
 const ticketsSchema = {
