@@ -75,7 +75,7 @@ app.get("/viewTickets", (req, res) => {
                     if (error) {
                         console.log(error);
                     } else {
-                        res.render("viewTickets", { tickets: tickets, categories: categories });
+                        res.render("viewTickets", { tickets, categories });
                     }
                 });
             }
@@ -89,7 +89,7 @@ app.get("/viewTicket/:id", (req, res) => {
         if (error) {
             console.log(error);
         } else {
-            res.render("viewTicket", { ticket: ticket });
+            res.render("viewTicket", { ticket });
         }
     });
 });
@@ -99,17 +99,18 @@ app.get("/submitTicket", (req, res) => {
         if (error) {
             console.log(error);
         } else {
-            res.render("submitTicket", { categories: categories });
+            res.render("submitTicket", { categories });
         }
     });
 });
 
 app.post("/submitTicket", (req, res) => {
+    const { subject, category, priority, submittedBy } = req.body;
     const ticket = new Ticket({
-        subject: req.body.subject,
-        category: req.body.category,
-        priority: req.body.priority,
-        submittedBy: req.body.submittedBy,
+        subject: subject,
+        category: category,
+        priority: priority,
+        submittedBy: submittedBy,
         dateTimeSubmitted: new Date(),
         closedBy: "",
         dateTimeClosed: "",
@@ -128,24 +129,26 @@ app.get("/categories", (req, res) => {
         if (error) {
             console.log(error);
         } else {
-            res.render("categories", { categories: categories });
+            res.render("categories", { categories });
         }
     });
 });
 
 app.post("/addCategory", (req, res) => {
-    TicketCategory.create({ category: req.body.newCategory }, (error) => {
+    const { newCategory } = req.body;
+    TicketCategory.create({ category: newCategory }, (error) => {
         if (error) {
             console.log(error);
         } else {
-            console.log(`Category: ${req.body.newCategory} added.`);
+            console.log(`Category: ${newCategory} added.`);
         }
     });
     res.redirect("/categories");
 });
 
 app.post("/removeCategory", (req, res) => {
-    TicketCategory.findByIdAndDelete(req.body._id, (error, category) => {
+    const { ticketId } = req.body;
+    TicketCategory.findByIdAndDelete(ticketId, (error, category) => {
         if (error) {
             console.log(error);
         } else {
@@ -156,7 +159,8 @@ app.post("/removeCategory", (req, res) => {
 });
 
 app.post("/closeTicket", (req, res) => {
-    Ticket.findOneAndUpdate({ _id: `${req.body.ticketId}` }, { closedBy: req.body.closedBy, dateTimeClosed: new Date(), solution: req.body.solution }, (error, result) => {
+    const { ticketId, closedBy, solution } = req.body;
+    Ticket.findOneAndUpdate({ _id: `${ticketId}` }, { closedBy: closedBy, dateTimeClosed: new Date(), solution: solution }, (error, result) => {
         if (error) {
             console.log(error);
         } else {
