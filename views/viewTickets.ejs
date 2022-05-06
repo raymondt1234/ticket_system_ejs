@@ -44,7 +44,7 @@
                 <th scope="col">View Ticket</th>
             </thead>
             <% tickets.forEach(ticket=> { %>
-                <form action="/viewTickets" method="post">
+                <form action=<%="/viewTicket/" + ticket._id %> method="get">
                     <% if (ticket.closedBy==="" ) { %>
                         <tr class="ticket open" data-category="<%= ticket.category %>">
                     <% } else { %>

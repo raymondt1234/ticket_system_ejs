@@ -83,8 +83,9 @@ app.get("/viewTickets", (req, res) => {
         .sort({ "dateTimeSubmitted": -1 });
 });
 
-app.post("/viewTickets", (req, res) => {
-    Ticket.findOne({ _id: `${req.body.ticketId}` }, (error, ticket) => {
+app.get("/viewTicket/:id", (req, res) => {
+    const { id } = req.params;
+    Ticket.findOne({ _id: id }, (error, ticket) => {
         if (error) {
             console.log(error);
         } else {
