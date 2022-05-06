@@ -53,9 +53,9 @@
                 <label for="solution">Solution</label>
                 <!-- Set to readonly when the ticket has already been closed -->
                 <% if (ticket.solution === "") { %>
-                    <textarea class="form-control" name="solution" rows="10"><%= ticket.solution %></textarea>
+                    <textarea class="form-control" name="solution" rows="10" required><%= ticket.solution %></textarea>
                 <% } else { %>
-                    <textarea class="form-control" name="solution" rows="10" readonly><%= ticket.solution %></textarea>
+                    <textarea class="form-control" name="solution" rows="10" required readonly><%= ticket.solution %></textarea>
                 <% } %>
             </div>
             <input type="hidden" name="ticketId" value="<%= ticket._id %>" required>
