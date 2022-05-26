@@ -1,4 +1,11 @@
 $(document).ready(() => {
+    // click to view a specific ticket
+    const table = document.querySelector("table");
+    table.addEventListener("click", (event) => {
+        let ticketId = event.target.parentElement.id;
+        window.location.href = `/viewTicket/${ticketId}`;
+    });
+
     $("#categorySelect").change(() => {
         let category = $(".form-select option:selected").val();
 
@@ -10,7 +17,7 @@ $(document).ready(() => {
         }
     });
 
-    $('input[type=radio][name=options]').change(function() {
+    $('input[type=radio][name=options]').change(function () {
         if (this.id === "all") {
             $("tr.ticket").show();
             console.log(`${this.id} Show all tickets`);

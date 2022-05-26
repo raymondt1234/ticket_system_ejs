@@ -41,14 +41,12 @@
                 <th scope="col">Date/Time Closed</th>
                 <th scope="col">Closed By</th>
                 <th scope="col">Solution</th>
-                <th scope="col">View Ticket</th>
             </thead>
             <% tickets.forEach(ticket=> { %>
-                <form action=<%="/viewTicket/" + ticket._id %> method="get">
                     <% if (ticket.closedBy==="" ) { %>
-                        <tr class="ticket open" data-category="<%= ticket.category %>">
+                        <tr id="<%=ticket._id %>" class="ticket open" data-category="<%= ticket.category %>">
                     <% } else { %>
-                        <tr class="ticket closed" data-category="<%= ticket.category %>">
+                        <tr id="<%=ticket._id %>" class="ticket closed" data-category="<%= ticket.category %>">
                     <% } %>
                             <td>
                                 <%= ticket.category %>
@@ -84,13 +82,9 @@
                             <td>
                                 <%= ticket.solution %>
                             </td>
-
-                            <td>
-                                <button class="btn btn-dark" type="submit" name="ticketId" value="<%= ticket._id %>"onclick="this.form.submit()">View</button>
-                            </td>
                         </tr>
-                </form>
                 <% }); %>
+            </div>
         </table>
     </div>
 
