@@ -1,0 +1,43 @@
+<!-- Table row for a ticket -->
+<% if (ticket.closedBy==="" ) { %>
+    <tr id="<%=ticket._id %>" class="ticket open" data-category="<%= ticket.category %>">
+<% } else { %>
+    <tr id="<%=ticket._id %>" class="ticket closed" data-category="<%= ticket.category %>">
+<% } %>
+            <td>
+                <%= ticket.category %>
+            </td>
+
+            <td>
+                <%= ticket.subject %>
+            </td>
+
+            <td>
+                <%= ticket.priority %>
+            </td>
+
+            <td>
+                <%= ticket.submittedBy %>
+            </td>
+
+            <td>
+                <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'
+                    }).format(ticket.dateTimeSubmitted); %>
+            </td>
+
+            <td>
+                <!-- If dateTimeClosed is null display an empty cell instead of "Invalid date"-->
+                <% if(ticket.dateTimeClosed !==null) { %>
+                    <%= new Intl.DateTimeFormat('en-US', { dateStyle: 'short' , timeStyle: 'short'
+                        }).format(ticket.dateTimeClosed); %>
+                        <% } %>
+            </td>
+
+            <td>
+                <%= ticket.closedBy %>
+            </td>
+
+            <td>
+                <%= ticket.solution %>
+            </td>
+    </tr>
